@@ -1,6 +1,7 @@
 const { catchAsyncError } = require("../middlewares/catchAsyncError")
 const Student = require('../models/studentModel');
 const ErrorHandler = require("../utils/ErrorHandler");
+const path = require("path")
 const { sendToken } = require("../utils/SendToken");
 const { sendmail } = require("../utils/nodemailer");
 const imagekit = require("../utils/imagekit").initImagekit();
@@ -80,7 +81,7 @@ exports.studentUpdate = catchAsyncError (async(req, res, next)=>{
 
 exports.studentAvatar = catchAsyncError (async(req, res, next)=>{
     const student = await Student.findById(req.params.id);
-    const file = req.file.avatar;
+    const file = req.files.avatar;
     const modifiedFileName = `resumeBuilder-${Date.now()}${path.extname(file.name)}`;
 
     if(student.avatar.fileId !== ""){
@@ -95,6 +96,6 @@ exports.studentAvatar = catchAsyncError (async(req, res, next)=>{
     await student.save();
     res.status(200).json({
         success:true,
-        message:"Profile updated!"
+        message:"Profile updated!",
     })
 })
