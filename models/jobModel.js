@@ -11,6 +11,8 @@ const jobModel = new mongoose.Schema({
     salary:Number,
     perks:String,
     assessment:String,
+    employee:{type:mongoose.Schema.Types.ObjectId, ref:'employee'},
+    students:[{type:mongoose.Schema.Types.ObjectId, ref:'student'}],
 },{timestamps:true});
 
 const job = mongoose.model('job',jobModel);

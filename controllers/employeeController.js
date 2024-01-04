@@ -1,6 +1,7 @@
 const { catchAsyncError } = require("../middlewares/catchAsyncError")
 const Employee = require('../models/employeeModel');
 const Internship = require("../models/internshipModel")
+const Job = require("../models/jobModel")
 const ErrorHandler = require("../utils/ErrorHandler");
 const path = require("path")
 const { sendToken } = require("../utils/SendToken");
@@ -105,9 +106,50 @@ exports.employeeLogo = catchAsyncError (async(req, res, next)=>{
 // ----------- Internship ----------
 
 exports.createInternship = catchAsyncError(async(req, res, next)=>{
-    const internship = await Internship(req.body).save();
+    const internship = await Internship(req.body);
+    internship.employee = req.id;
     const employee = await Employee.findById(req.id).exec();
-    employee.internship.push(internship.id);
+    employee.internships.push(internship._id);
+    await internship.save();
     await employee.save();
     res.status(201).json({success:true, internship})
+})
+
+
+exports.readInternship = catchAsyncError(async(req, res, next)=>{
+    const {internships} = await Employee.findById(req.id).populate("internships").exec();
+    res.status(201).json({success:true, internships})
+})
+
+
+exports.readSingleInternship = catchAsyncError(async(req, res, next)=>{
+    const internship = await Internship.findById(req.params.id).exec();
+    if(!internship) return new ErrorHandler("Internship not found")
+    res.status(201).json({success:true, internship});
+})
+
+
+// ----------- Job ----------
+
+exports.createJob = catchAsyncError(async(req, res, next)=>{
+    const Job = await Job(req.body);
+    Job.employee = req.id;
+    const employee = await Employee.findById(req.id).exec();
+    employee.Jobs.push(Job._id);
+    await Job.save();
+    await employee.save();
+    res.status(201).json({success:true, Job})
+})
+
+
+exports.readJob = catchAsyncError(async(req, res, next)=>{
+    const {Jobs} = await Job.findById(req.id).populate("Jobs").exec();
+    res.status(201).json({success:true, Jobs})
+})
+
+
+exports.readSingleJob = catchAsyncError(async(req, res, next)=>{
+    const Job = await Job.findById(req.params.id).exec();
+    if(!Job) return new ErrorHandler("Job not found")
+    res.status(201).json({success:true, Job});
 })

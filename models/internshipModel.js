@@ -16,6 +16,8 @@ const internshipModel = new mongoose.Schema({
     },
     perks:String,
     assessment:String,
+    employee:{type:mongoose.Schema.Types.ObjectId, ref:'employee'},
+    students:[{type:mongoose.Schema.Types.ObjectId, ref:'student'}],
 },{timestamps:true});
 
 const internship = mongoose.model('internship',internshipModel);

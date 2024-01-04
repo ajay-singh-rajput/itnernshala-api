@@ -62,7 +62,13 @@ const studentModel = new mongoose.Schema({
         project:[],
         skills:[],
         accomplishments:[]
-    }
+    },
+    internships:[
+        {type:mongoose.Schema.Types.ObjectId, ref:'internship'}
+    ],
+    jobs:[
+        {type:mongoose.Schema.Types.ObjectId, ref:'jobs'}
+    ],
 },{timestamps:true});
 
 studentModel.pre("save",function (){
