@@ -78,20 +78,20 @@ exports.employeeUpdate = catchAsyncError (async(req, res, next)=>{
     // sendToken(employee, 201, res)
 });
 
-exports.employeeAvatar = catchAsyncError (async(req, res, next)=>{
+exports.employeeLogo = catchAsyncError (async(req, res, next)=>{
     const employee = await Employee.findById(req.params.id);
-    const file = req.files.avatar;
+    const file = req.files.organizationLogo;
     const modifiedFileName = `resumeBuilder-${Date.now()}${path.extname(file.name)}`;
 
-    if(employee.avatar.fileId !== ""){
-        await imagekit.deleteFile(employee.avatar.fileId);
+    if(employee.organizationLogo.fileId !== ""){
+        await imagekit.deleteFile(employee.organizationLogo.fileId);
     }
 
     const {fileId, url} = await imagekit.upload({
         file:file.data,
         fileName:modifiedFileName,
     });
-    employee.avatar = {fileId, url};
+    employee.organizationLogo = {fileId, url};
     await employee.save();
     res.status(200).json({
         success:true,
