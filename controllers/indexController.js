@@ -3,6 +3,7 @@ const Student = require('../models/studentModel');
 const ErrorHandler = require("../utils/ErrorHandler");
 const { sendToken } = require("../utils/SendToken");
 const { sendmail } = require("../utils/nodemailer");
+const imagekit = require("../utils/imagekit").initImagekit();
 
 exports.homepage =catchAsyncError (async(req, res, next)=>{
     res.json({message:'homepage'})
@@ -17,7 +18,6 @@ exports.currentUser = catchAsyncError(async (req, res, next)=>{
 exports.studentSignup = catchAsyncError (async(req, res, next)=>{
     const student = await new Student(req.body).save();
     sendToken(student, 201, res)
-    res.status(201).json(student)
 })
 
 exports.studentSignIn = catchAsyncError (async(req, res, next)=>{
@@ -29,7 +29,6 @@ exports.studentSignIn = catchAsyncError (async(req, res, next)=>{
     sendToken(student, 200, res)
     // res.status(201).json(student)
 })
-
 
 exports.studentSignOut = catchAsyncError (async(req, res, next)=>{
     res.clearCookie('token');
@@ -67,4 +66,35 @@ exports.studentResetPassword = catchAsyncError (async(req, res, next)=>{
         student.password = req.body.password;
         await student.save();
     sendToken(student,201, res);
+})
+
+exports.studentUpdate = catchAsyncError (async(req, res, next)=>{
+    const student = await Student.findByIdAndUpdate(req.params.id,req.body).exec();
+    res.status(200).json({
+        success:true,
+        message:"profile updated successfully",
+        student
+    })
+    // sendToken(student, 201, res)
+});
+
+exports.studentAvatar = catchAsyncError (async(req, res, next)=>{
+    const student = await Student.findById(req.params.id);
+    const file = req.file.avatar;
+    const modifiedFileName = `resumeBuilder-${Date.now()}${path.extname(file.name)}`;
+
+    if(student.avatar.fileId !== ""){
+        await imagekit.deleteFile(student.avatar.fileId);
+    }
+
+    const {fileId, url} = await imagekit.upload({
+        file:file.data,
+        fileName:modifiedFileName,
+    });
+    student.avatar = {fileId, url};
+    await student.save();
+    res.status(200).json({
+        success:true,
+        message:"Profile updated!"
+    })
 })
