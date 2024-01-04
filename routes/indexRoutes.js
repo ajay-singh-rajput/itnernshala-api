@@ -7,30 +7,30 @@ const router = express.Router();
 router.get('/', homepage)
 
 // POST / student
-router.post('/student',isAuthenticated, currentUser)
+router.post('/',isAuthenticated, currentUser)
 
 // POST /student/signUp
-router.post('/student/signup', studentSignup);
+router.post('/signup', studentSignup);
 
 // POST /student/signIn
-router.post('/student/signIn', studentSignIn);
+router.post('/signIn', studentSignIn);
 
 // POST /student/signOut
-router.get('/student/signOut',isAuthenticated, studentSignOut);
+router.get('/signOut',isAuthenticated, studentSignOut);
 
 // POST /student/send-mail
-router.post('/student/send-mail',studentSendMail);
+router.post('/send-mail',studentSendMail);
 
 // get /student/forgot-link/:id
-router.get('/student/forgot-link/:id',studentForgetLink);
+router.get('/forgot-link/:id',studentForgetLink);
 
 // post /student/reset-password
-router.post('/student/reset-password', isAuthenticated, studentResetPassword);
+router.post('/reset-password', isAuthenticated, studentResetPassword);
 
 // post /student/update/:id
-router.post('/student/update/:id', isAuthenticated, studentUpdate);
+router.post('/update/:id', isAuthenticated, studentUpdate);
 
 // post /student/avatar/:id
-router.post('/student/avatar/:id', isAuthenticated, studentAvatar);
+router.post('/avatar/:id', isAuthenticated, studentAvatar);
 
 module.exports = router;
