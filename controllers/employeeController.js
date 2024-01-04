@@ -1,5 +1,6 @@
 const { catchAsyncError } = require("../middlewares/catchAsyncError")
 const Employee = require('../models/employeeModel');
+const Internship = require("../models/internshipModel")
 const ErrorHandler = require("../utils/ErrorHandler");
 const path = require("path")
 const { sendToken } = require("../utils/SendToken");
@@ -97,4 +98,16 @@ exports.employeeLogo = catchAsyncError (async(req, res, next)=>{
         success:true,
         message:"Profile updated!",
     })
+})
+
+
+
+// ----------- Internship ----------
+
+exports.createInternship = catchAsyncError(async(req, res, next)=>{
+    const internship = await Internship(req.body).save();
+    const employee = await Employee.findById(req.id).exec();
+    employee.internship.push(internship.id);
+    await employee.save();
+    res.status(201).json({success:true, internship})
 })
