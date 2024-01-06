@@ -14,7 +14,6 @@ exports.homepage =catchAsyncError (async(req, res, next)=>{
 
 exports.currentUser = catchAsyncError(async (req, res, next)=>{
     const student = await Student.findById(req.id).exec();
-
     res.json({student})
 })
 

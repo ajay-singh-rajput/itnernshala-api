@@ -28,6 +28,7 @@ const fileupload = require("express-fileupload");
 app.use(fileupload());
 
 // routes
+app.use('/', require('./routes/homeRoutes'))
 app.use('/student', require('./routes/indexRoutes'));
 app.use('/resume', require('./routes/resumeRoutes'));
 app.use('/employee', require('./routes/employeeRoutes'));
