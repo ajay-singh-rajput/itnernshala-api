@@ -9,10 +9,12 @@ const { sendmail } = require("../utils/nodemailer");
 const imagekit = require("../utils/imagekit").initImagekit();
 
 exports.homepage =catchAsyncError (async(req, res, next)=>{
+    console.log(req.id);
     res.json({message:'homepage'})
 })
 
 exports.currentUser = catchAsyncError(async (req, res, next)=>{
+    console.log(req.id);
     const student = await Student.findById(req.id).exec();
     res.json({student})
 })
