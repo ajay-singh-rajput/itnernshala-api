@@ -5,6 +5,7 @@ const app = express();
 // db connection
 require('./models/database').connectDatabase();
 
+
 // logger
 const logger = require('morgan');
 app.use(logger('tiny'));
@@ -26,6 +27,11 @@ app.use(cookieParser());
 // express file upload
 const fileupload = require("express-fileupload");
 app.use(fileupload());
+
+// isLoggedIn
+const {isLoggedIn} = require('./middlewares/isLoggedIn');
+// app.use(isLoggedIn);
+
 
 // routes
 app.use('/', require('./routes/homeRoutes'))

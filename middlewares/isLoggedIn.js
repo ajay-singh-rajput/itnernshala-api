@@ -8,7 +8,9 @@ if(!token){
     req.id = null
     return next();
 }
-const {id} = jwt.verify(token, process.env.JWT_SECRET);
-req.id = id
+const {id, userType} = jwt.verify(token, process.env.JWT_SECRET);
+req.id = id,
+req.userType = userType;
 next();
 })
+

@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 const studentModel = new mongoose.Schema({
+    userType:{
+        type:String,
+        default:"student"
+    },
     firstName:{
         type:String,
         required:[true, "first name is required"],
