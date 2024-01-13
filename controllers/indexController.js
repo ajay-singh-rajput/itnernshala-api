@@ -20,6 +20,8 @@ exports.currentUser = catchAsyncError(async (req, res, next)=>{
 })
 
 exports.studentSignup = catchAsyncError (async(req, res, next)=>{
+    // console.log(req.body)
+    // res.json({message:'register successfully'})
     const student = await new Student(req.body).save();
     sendToken(student, 201, res)
 })

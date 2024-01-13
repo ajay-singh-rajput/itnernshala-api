@@ -14,6 +14,11 @@ app.use(logger('tiny'));
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
+// cors
+const cors = require('cors');
+app.use(cors());
+
+
 // session and cookies
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
