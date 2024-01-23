@@ -5,7 +5,6 @@ const { head } = require('../routes/homeRoutes');
 
 exports.isAuthenticated = catchAsyncError(async(req, res, next)=>{
     const headerData = req.headers.authorization
-    console.log(headerData);
     const checkData = {
         id:headerData.split(' ')[0],
         token:headerData.split(' ')[1],
